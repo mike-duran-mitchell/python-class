@@ -1,5 +1,3 @@
-
-
 def is_factor(num):
     if num == 0 or num == 1 or num == 2 or num == 3:
         print("this number is already prime, you blockhead!")
