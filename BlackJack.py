@@ -52,6 +52,7 @@ def get_card_details(cards):
     print("The player is holding", len(cards), "cards of value", get_hand_value(cards))
     for i in range(len(cards)):
         print(cards[i][0], ' of ', cards[i][1])
+    return get_hand_value(cards)
 
 
 def one_card_down(cards):
@@ -69,24 +70,29 @@ def hit(deck_to_deal):
 
 def get_hand_value(cards):
     cv = 0
+    has_ace = []
     for i in range(len(cards)):
         n = cards[i][0]
-        count = 0
         if n == 'Ace':
-            count += 1
             user_decision = int(input('Do you want your Ace to be worth 1 or 11?'))
             while user_decision not in (1, 11):
                 user_decision = int(input('Do you want your Ace to be worth 1 or 11?'))
             if user_decision == 1:
                 cv += 1
+                has_ace.append(1)
             elif user_decision == 11:
                 cv += 11
+                has_ace.append(11)
         elif n in ('King', 'Queen', 'Jack'):
             cv += 10
         else:
             cv += n
-        if cv > 21 and count > 1:
-            print('You have an ace, homie')
+        if cv > 21:
+            if 11 in has_ace:
+                print('value of ace has been reduced from 11 to 1 - be careful of bustin out there!')
+                cv -= 10
+            else:
+                break
     return cv
 
 
@@ -111,7 +117,10 @@ while True:
                         break
                     elif user_hit in('y', 'yes', 'ys', 'ye'):
                         hand.extend(hit(deck))
-                        get_card_details(hand)
+                        check_value = get_card_details(hand)
+                        if check_value > 21:
+                            print('You busted, buster! Watch out for loose seals!')
+                            break
                     else:
                         break
         except ValueError:
