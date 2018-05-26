@@ -68,8 +68,6 @@ def hit(deck_to_deal):
 
 
 def get_hand_value(cards):
-
-   #  print(sorted(cards), key=itemgetter(0))
     cv = 0
     for i in range(len(cards)):
         n = cards[i][0]
